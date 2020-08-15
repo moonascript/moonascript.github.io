@@ -246,7 +246,13 @@ function get_quest(item){
 var log_sort = 0; // 紀錄順序 0=上到下 1=下到上
 function save_log(log_text){
 	var li_item = $("#moon_log").find("li")
-	$(li_item[li_item.length-1]).remove()
+	if(log_sort == 0){
+		$(li_item[0]).remove()
+	}
+	else{
+		$(li_item[li_item.length-1]).remove()
+	}
+	
 	var new_item = $("<li></li>").text(log_text)
 	if(log_sort == 0){
 		$("#moon_log").append(new_item)
