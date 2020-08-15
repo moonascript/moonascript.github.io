@@ -243,11 +243,17 @@ function get_quest(item){
 	item.item = tag_b[1].innerText
 }
 
+var log_sort = 0; // 紀錄順序 0=上到下 1=下到上
 function save_log(log_text){
 	var li_item = $("#moon_log").find("li")
 	$(li_item[li_item.length-1]).remove()
 	var new_item = $("<li></li>").text(log_text)
-	$("#moon_log").prepend(new_item)
+	if(log_sort == 0){
+		$("#moon_log").append(new_item)
+	}
+	else{
+		$("#moon_log").prepend(new_item)
+	}
 	console.log(log_text);
 }
 
@@ -285,3 +291,5 @@ async function auto_donate(count){
 	save_log("將錢存回銀行")
 	await save_money();
 }
+
+save_log("月琴的腳本成功載入了唷ε٩(๑> ₃ <)۶з")
