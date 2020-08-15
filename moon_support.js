@@ -71,6 +71,28 @@ var shop_list = {
 		}
 }
 
+function remove_reload_script(){
+	var check_script = $("script")
+	var check_arr = [];
+	var del_arr = [];
+	for(i=0 ; i<check_script.length ; i++){
+		console.log(i)
+		var check_src = check_script[i].src
+		if(check_src != ""){
+			var check_result = check_arr.indexOf(check_src)
+			if (check_result == -1){
+				check_arr.push(check_src)
+			}
+			else{
+				del_arr.push(check_script[check_result]);
+			}
+		}
+	}
+	for(i=0 ; i<del_arr.length ; i++){
+		$(del_arr[i]).remove();
+	}
+}
+
 function find_index(value){
 	for(list in index){
 		var item = index[list]['val'];
@@ -299,5 +321,6 @@ async function auto_donate(count){
 	save_log("將錢存回銀行")
 	await save_money();
 }
-
+remove_reload_script();
 save_log("月琴的腳本成功載入了唷ε٩(๑> ₃ <)۶з")
+
