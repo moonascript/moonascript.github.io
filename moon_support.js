@@ -76,7 +76,6 @@ function remove_reload_script(){
 	var check_arr = [];
 	var del_arr = [];
 	for(i=0 ; i<check_script.length ; i++){
-		console.log(i)
 		var check_src = check_script[i].src
 		if(check_src != ""){
 			var check_result = check_arr.indexOf(check_src)
