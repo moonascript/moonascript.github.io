@@ -23,28 +23,30 @@ void(function(){
 	$("div#newmsg").append(cif)
 	
 	// 修改訊息紀錄視窗
-	var msg_box = $("table.cc#other_msg")[0];
-	var msg_title = $(msg_box).find("tr")[0];
-	var tmp = $(msg_title).find("td")[0]
-	tmp = $(tmp).clone()[0]
-	$(tmp).find("font")[0].innerText = "腳本紀錄"
-	msg_title.append(tmp)
-	var msg_title = $(msg_box).find("tr")[0];
-	var tmp = $(msg_title).find("td")
-	var width_percent = (1/tmp.length*100).toFixed("") + "%"
-	for(i=0 ; i<tmp.length ; i++){
-		tmp[i].width = width_percent
-	}
-	var msg_list = $(msg_box).find("tr")[1];
-	var tmp = $(msg_list).find("td")[0]
-	tmp = $(tmp).clone()[0]
-	tmp_1 = $(tmp).find("font")[0]
-	tmp_1.id="moon_log"
-	$(msg_list).append(tmp)
-	$("#moon_log").empty()
-	for(i=1 ; i<=10 ; i++){
-		var li_item = $("<li></li>");
-		$("#moon_log").append(li_item)
+	if($("#moon_log").length == 0){
+		var msg_box = $("table.cc#other_msg")[0];
+		var msg_title = $(msg_box).find("tr")[0];
+		var tmp = $(msg_title).find("td")[0]
+		tmp = $(tmp).clone()[0]
+		$(tmp).find("font")[0].innerText = "腳本紀錄"
+		msg_title.append(tmp)
+		var msg_title = $(msg_box).find("tr")[0];
+		var tmp = $(msg_title).find("td")
+		var width_percent = (1/tmp.length*100).toFixed("") + "%"
+		for(i=0 ; i<tmp.length ; i++){
+			tmp[i].width = width_percent
+		}
+		var msg_list = $(msg_box).find("tr")[1];
+		var tmp = $(msg_list).find("td")[0]
+		tmp = $(tmp).clone()[0]
+		tmp_1 = $(tmp).find("font")[0]
+		tmp_1.id="moon_log"
+		$(msg_list).append(tmp)
+		$("#moon_log").empty()
+		for(i=1 ; i<=10 ; i++){
+			var li_item = $("<li></li>");
+			$("#moon_log").append(li_item)
+		}
 	}
 
 })()
