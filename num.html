@@ -1,0 +1,141 @@
+<html>
+	<head>
+	<title>猜數字</title>
+	<!-- Ver.20200815 Made by 月琴ε٩(๑> ₃ <)۶з -->
+	<!-- 20200806 第一次出版 -->
+	<!-- 20200815 修正猜中正確數字長度 -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
+		</script>
+		
+		<script>
+			$(document).ready(function(){
+				for(var i=1 ; i<10 ; i++)
+					$("#sel_num").append($("<option></option>").attr("value", i).text(i));
+				var option = $("#sel_num")[0][3];
+				$(option).attr("selected","selected");
+			})
+			function add_member(){
+				var name = $("#txt_member").val();
+				$("#sel_member").append($("<option></option>").attr("value", name).text(name));
+				$("#txt_member").val("");
+			}
+			
+			function remove_select(){
+				$("#sel_member").find(":selected").remove();
+			}
+			function remove_all(){
+				$("#sel_member option").remove();
+			}
+			function check_ans(){
+				var ans = $("#txt_ans").val();
+				var str = $("#txt_member_ans").val();
+				if(ans.length != str.length){
+					$("#msg_area").append(" 長度不對拉!!<br>");
+					return "";
+				}
+				var arr = str.split("");
+				if(isRepeat(arr)){
+					$("#msg_area").append(" 答案重複拉!!<br>");
+					return "";
+				}
+				var a = 0;
+				var b = 0;
+				for(i=0 ; i<str.length ; i++){
+					var check = ans.indexOf(arr[i]);
+					if(check > -1){
+						if(check == i)
+							a++;
+						else
+							b++;
+					}
+				}
+				if(a==$("#txt_ans").val().length){
+					$("#msg_area").append(" 恭喜猜中拉!!<br>");
+					return "";
+				}
+				return(a+"A"+b+"B");
+			}
+			function game_start(){
+				var player = $("#sel_member").find(":selected").text();
+				var ans = $("#txt_member_ans").val();
+				$("#msg_area").append(player + "猜:" + ans);
+				var result = check_ans();
+				if(result != ""){
+					$("#msg_area").append(" 結果是" + result);
+					change_player();
+					var player = $("#sel_member").find(":selected").text();
+					$("#msg_area").append("!! 接下來換" + player + "<br>");
+					$("#txt_member_ans").val("");
+				}
+			}
+			function change_player(){
+				var len = $("#sel_member")[0].length - 1;
+				var index = $("#sel_member").find(":selected")[0].index;
+				var old_option = $("#sel_member")[0][index];
+				$(old_option).removeAttr("selected")
+				index += 1;
+				if(index > len){
+					index = 0;
+				}
+				var option = $("#sel_member")[0][index];
+				$(option).attr("selected","selected")
+			}
+			function create_rnd_ans(){
+				var ans = "";
+				var len = $("#sel_num").find(":selected").text();
+				for(var i=0 ; i<len ; i++){
+					var r ;
+					do{
+						r = get_rnd();
+					}while(ans.indexOf(r) != -1)
+					ans = ans + r;
+				}
+				$("#txt_ans").val(ans);
+			}
+			function get_rnd(){
+				var range = 10;
+				var r = Math.random() * range
+				r = Math.floor(r)
+				return r;
+			}
+			function isRepeat(arr){
+				var hash = {};
+				for(var i in arr) {
+					if(hash[arr[i]])
+						return true;
+					hash[arr[i]] = true;
+				}
+				return false;
+			}
+		</script>
+		<style type="text/css">
+			body{
+				font-family:微軟正黑體;
+			}
+		</style>
+	</head>
+	<body>
+		<div>
+			參加者名單
+			<select id="sel_member">
+			</select><br>
+			新增參賽人員<input type="textbox" id="txt_member"/>
+			<div>
+				<input type="button" value="新增人員" onclick="add_member();"/>
+				<input type="button" value="刪除選中人員" onclick="remove_select();"/>
+				<input type="button" value="重置參賽名單" onclick="remove_all();"/>
+			</div>
+		</div>
+		<div>
+			<H2>猜數字(不重複)</H2>
+		</div>
+		設定答案<input type="textbox"/ id="txt_ans"><input type="button" value="隨機產生" onclick="create_rnd_ans();"/>
+		數字長度<select id="sel_num">
+		</select>
+		<br>
+		參賽者猜<input type="textbox"/ id="txt_member_ans"><input type="button" value="檢查答案" onclick="game_start();"/>
+		<div id="msg_area">
+			
+		</div>
+	</body>
+</html>
