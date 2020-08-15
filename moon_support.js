@@ -21,6 +21,32 @@ void(function(){
 	cif.id = 'iframe_move'
 	cif.style = 'display:none;'
 	$("div#newmsg").append(cif)
+	
+	// 修改訊息紀錄視窗
+	var msg_box = $("table.cc#other_msg")[0];
+	var msg_title = $(msg_box).find("tr")[0];
+	var tmp = $(msg_title).find("td")[0]
+	tmp = $(tmp).clone()[0]
+	$(tmp).find("font")[0].innerText = "腳本紀錄"
+	msg_title.append(tmp)
+	var msg_title = $(msg_box).find("tr")[0];
+	var tmp = $(msg_title).find("td")
+	var width_percent = (1/tmp.length*100).toFixed("") + "%"
+	for(i=0 ; i<tmp.length ; i++){
+		tmp[i].width = width_percent
+	}
+	var msg_list = $(msg_box).find("tr")[1];
+	var tmp = $(msg_list).find("td")[0]
+	tmp = $(tmp).clone()[0]
+	tmp_1 = $(tmp).find("font")[0]
+	tmp_1.id="moon_log"
+	$(msg_list).append(tmp)
+	$("#moon_log").empty()
+	for(i=1 ; i<=10 ; i++){
+		var li_item = $("<li></li>");
+		$("#moon_log").append(li_item)
+	}
+
 })()
 
 index = {
@@ -62,7 +88,7 @@ async function move(value){
 	var arr = map.contents().find("table");
 	var now_map = arr[0].innerText.split("你目前的所在地：")[1].substring(0,5).replace(' ','').replace(' ','')
 	if(now_map == index['xy']['val'][move_to]){
-		console.log("已經在["+ value +"].");
+		save_log("已經在["+ value +"].");
 	}
 	else{
 		map.get(0).contentWindow.moves(move_to); 
@@ -71,13 +97,13 @@ async function move(value){
 		if (t[0].innerText.indexOf("已經到了") == -1){ 
 			var sec = t[0].innerText.split("剩餘 ")[1].split(" ")[0];
 			get_all_data();
-			console.log("移動至["+ value +"]失敗，等待" + sec + "秒後重新移動.");
+			save_log("移動至["+ value +"]失敗，等待" + sec + "秒後重新移動.");
 			backtown();
 			await sleep(1000*sec);
 			await move(value);
 		} 
 		else{
-			console.log("移動至["+ value +"]成功.");
+			save_log("移動至["+ value +"]成功.");
 		}
 	}
 // moves(index); 
@@ -116,12 +142,12 @@ async function buy(value){
 		await sleep(1000);
 		var check = await buy_item(value);
 		if(check == true){
-			console.log("在" + search_list[i] + "發現了 [" + value +"] !!")
+			save_log("在" + search_list[i] + "發現了 [" + value +"] !!")
 			return true;
 			break;
 		}
 		else{
-			console.log("在" + search_list[i] + "找不到 [" + value +"] !!")
+			save_log("在" + search_list[i] + "找不到 [" + value +"] !!")
 		}
 	}
 	return false;
@@ -201,13 +227,13 @@ async function quest_report(value){
 	quest_item = $("iframe#actionframe").contents().find(".fc")
 	var item_name = "贊助「"+ value +"」完成贊助裝備任務"
 	if(find_item(quest_item,item_name) == true){
-		console.log("繳交任務成功")
+		save_log("繳交任務成功")
 		find_click(quest_item,item_name);
 		await sleep(set_delay);
 		goto_quest();
 	}
 	else{
-		console.log("繳交任務失敗")
+		save_log("繳交任務失敗")
 	}
 }
 
@@ -217,37 +243,45 @@ function get_quest(item){
 	item.item = tag_b[1].innerText
 }
 
+function save_log(log_text){
+	var li_item = $("#moon_log").find("li")
+	$(li_item[li_item.length-1]).remove()
+	var new_item = $("<li></li>").text(log_text)
+	$("#moon_log").prepend(new_item)
+	console.log(log_text);
+}
+
 async function auto_donate(count){
-	console.log("開始執行自動贊助裝備任務")
-	console.log("從銀行拿錢")
+	save_log("開始執行自動贊助裝備任務")
+	save_log("從銀行拿錢")
 	await get_money();
 	for(var i = 1 ; i<= count ; i++){
-		console.log("第"+ i +"次執行")
+		save_log("第"+ i +"次執行")
 		goto_quest();
 		
 		var quest = {"map":"" , "item":""};
 		await sleep(set_delay);
-		console.log("正在接取任務...")
+		save_log("正在接取任務...")
 		await t(quest);
-		console.log("成功接到任務!")
-		console.log("任務地點:" + quest.map + " 任務目標:" + quest.item)
+		save_log("成功接到任務!")
+		save_log("任務地點:" + quest.map + " 任務目標:" + quest.item)
 		if(quest.map != ""){
 			await move(quest.map);
 		}
 		var check_buy = await buy(quest.item);
 		await sleep(set_delay);
 		if(check_buy==true){
-			console.log("購買完成")
+			save_log("購買完成")
 			goto_quest();
 			await sleep(set_delay);
 			await quest_report(quest.item);
 		}
 		else{
-			console.log("購買失敗")
+			save_log("購買失敗")
 		}
 		backtown();
 	}
-	console.log("執行完畢")
-	console.log("將錢存回銀行")
+	save_log("執行完畢")
+	save_log("將錢存回銀行")
 	await save_money();
 }
