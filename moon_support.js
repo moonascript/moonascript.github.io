@@ -152,6 +152,7 @@ async function move(value){
 		var t = map.contents().find("table") 
 		if (t[0].innerText.indexOf("已經到了") == -1){ 
 			var sec = t[0].innerText.split("剩餘 ")[1].split(" ")[0];
+			sec = sec - 1;
 			get_all_data();
 			save_log("移動至["+ value +"]失敗，等待" + sec + "秒後重新移動.");
 			backtown();
@@ -421,8 +422,10 @@ async function auto_buy_point(){
 					fastkeyform('town','fshop');
 				}
 				else{
-					if(check_buyer == user && no_get_user.indexOf(check_buyer) != -1 )
+					if(check_buyer == user && no_get_user.indexOf(check_buyer) != -1 ){
+						save_log("發現競標者為排除對象!");
 						continue;
+					}
 					if(d_m%30 == 29 && check_limit == "剩餘0分"){
 						money_B = parseInt(check_str.split("億")[0])
 						money_W = parseInt(check_str.split("億")[1].split("萬")[0])
