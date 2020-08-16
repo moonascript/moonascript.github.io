@@ -387,8 +387,6 @@ async function auto_buy_point(){
 	d_m = d.getMinutes()
 	d_s = d.getSeconds()
 	//console.log(d_m+'分'+d_s+'秒')
-	d_m = 59
-	d_s = 25
 	if ( (d_m%5 == 1 && d_s%60 == 1) || (d_m%30 == 29 && d_s%30 == 25) ){
 		var is_do = (d_m%30 == 29 && d_s%30 == 25);
 		save_log('現在時間:' +d_m+'分'+d_s+'秒' + "，檢查拍賣場.");
