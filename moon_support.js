@@ -383,7 +383,7 @@ async function global_tick(){
 	global_tick();
 }
 
-var no_get_user = ["隱居","御魂笑光輝"];
+var no_get_user = ["隱居","御魂笑光輝","創造再生lolita"];
 async function auto_buy_point(){
 	var d = new Date()
 	d_m = d.getMinutes()
