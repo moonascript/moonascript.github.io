@@ -386,9 +386,10 @@ async function auto_buy_point(){
 	var d = new Date()
 	d_m = d.getMinutes()
 	d_s = d.getSeconds()
+	var is_do = (d_m%30 == 29 && d_s%30 == 25);
 	//console.log(d_m+'分'+d_s+'秒')
-	if ( (d_m%5 == 1 && d_s%60 == 1) || (d_m%30 == 29 && d_s%30 == 25) ){
-		var is_do = (d_m%30 == 29 && d_s%30 == 25);
+	if ( (d_m%5 == 1 && d_s%60 == 1) || is_do == true ){
+		
 		save_log('現在時間:' +d_m+'分'+d_s+'秒' + "，檢查拍賣場.");
 		fastkeyform('town','fshop');
 		await sleep(set_delay);
@@ -409,7 +410,7 @@ async function auto_buy_point(){
 				check_buyer = $(item_detail[11]).text(); // 最高出價者
 				check_limit = $(item_detail[12]).text(); // 期限
 				save_log("目標:"+ t_target +" 目前出價:" + check_str + " 出價者為:" + check_buyer + " 剩餘時間:" + check_limit)
-				if(check_str == "0萬" && is_do){
+				if(check_str == "0萬" && is_do == true){
 					$(item_detail[0]).find("input").click()
 					$(gshop_list).find("input[type='txt']").val("30000")
 					$(gshop_list).find("input[value='確定出價']").click();
