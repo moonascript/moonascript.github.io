@@ -11,16 +11,47 @@ void(function(){
 	// 更正移動的id及目標視窗為iframe
 	//$("div.cmd").children[6].children[1].children[0].target = "iframe_move"
 	//$("div.cmd").children[6].children[1].children[0].id = "cmd_etc"
-	var cmd_div = $("div.cmd div")[5]
-	$(cmd_div).find("form").attr("target","iframe_move")
-	$(cmd_div).find("form").attr("id","cmd_etc")
+	// $("div.cmd form[action*='etc.cgi']")
+	// var cmd_div = $("div.cmd div")[5]
+	// $(cmd_div).find("form").attr("target","iframe_move")
+	// $(cmd_div).find("form").attr("id","cmd_etc")
 	
 	// 建立iframe到通知欄(預設隱藏)
-	cif = document.createElement("iframe")
-	cif.name = 'iframe_move'
-	cif.id = 'iframe_move'
-	cif.style = 'display:none;'
-	$("div#newmsg").append(cif)
+	if($("#iframe_move").length == 0){
+		cif = document.createElement("iframe")
+		cif.name = 'iframe_move'
+		cif.id = 'iframe_move'
+		cif.style = 'display:none;'
+		$("div#newmsg").append(cif)
+	}
+	if($("#iframe_fshop").length == 0){
+		cif = document.createElement("iframe")
+		cif.name = 'iframe_fshop'
+		cif.id = 'iframe_fshop'
+		cif.style = 'display:none;'
+		$("div#newmsg").append(cif)
+	}
+	if($("#iframe_cmd").length == 0){
+		cif = document.createElement("iframe")
+		cif.name = 'iframe_cmd'
+		cif.id = 'iframe_cmd'
+		cif.style = 'display:none;'
+		$("div#newmsg").append(cif)
+	}
+	if($("#iframe_other_cmd").length == 0){
+		cif = document.createElement("iframe")
+		cif.name = 'iframe_other_cmd'
+		cif.id = 'iframe_other_cmd'
+		cif.style = 'display:none;'
+		$("div#newmsg").append(cif)
+		
+		div_cmd = $(".cmd").clone()
+		new_form = $(div_cmd).find("form").attr("target","iframe_cmd")
+		$("#iframe_other_cmd").append(div_cmd)
+		for(i=0 ; i<new_form.length ; i++){
+			new_form[i]
+		}
+	}
 	
 	// 修改訊息紀錄視窗
 	if($("#moon_log").length == 0){
@@ -103,6 +134,8 @@ function find_index(value){
 }
 
 async function move(value){ 
+	$($("div.cmd form[action*='etc.cgi']")[0]).attr("id" , "cmd_etc")
+	$($("div.cmd form[action*='etc.cgi']")[0]).attr("target" , "iframe_move")
 	$("#cmd_etc select").val("move")
 	$("#cmd_etc input[type='submit']").click() 
 	var move_to = find_index(value); 
@@ -129,6 +162,8 @@ async function move(value){
 			save_log("移動至["+ value +"]成功.");
 		}
 	}
+	$($("div.cmd form[action*='etc.cgi']")[0]).removeAttr("id")
+	$($("div.cmd form[action*='etc.cgi']")[0]).removeAttr("target")
 // moves(index); 
 }
 
@@ -320,6 +355,102 @@ async function auto_donate(count){
 	save_log("將錢存回銀行")
 	await save_money();
 }
+
+var t_sw = false
+var c_sw = false
+var t_target = "贊助點數100點"
+var c_target = ""
+async function global_tick(){
+	if(t_sw == true){
+		if(c_sw == false){
+			save_log("開啟拍賣場截標模式，目標是[" + t_target + "] !")
+			c_target = t_target;
+			c_sw = true;
+		}
+		if (c_target != t_target){
+			c_target = t_target;
+			save_log("變更拍賣場目標，現在目標是[" + t_target + "] !")
+		}
+		await auto_buy_point();
+	}
+	else{
+		if(c_sw == true){
+			save_log("關閉拍賣場截標模式，目標是[" + t_target + "] !")
+			c_sw = false;
+		}
+	}
+	await sleep(1000);
+	global_tick();
+}
+async function auto_buy_point(){
+	var d = new Date()
+	d_m = d.getMinutes()
+	d_s = d.getSeconds()
+	//console.log(d_m+'分'+d_s+'秒')
+	d_m = 59
+	d_s = 25
+	if ( (d_m%5 == 1 && d_s%60 == 1) || (d_m%30 == 29 && d_s%30 == 25) ){
+		var is_do = (d_m%30 == 29 && d_s%30 == 25);
+		save_log('現在時間:' +d_m+'分'+d_s+'秒' + "，檢查拍賣場.");
+		fastkeyform('town','fshop');
+		await sleep(set_delay);
+		var gshop = find_iframe("#actionframe","table table.tc")
+		var gshop_list = $(gshop[0]).find("tr")
+		for(i=0 ; i<gshop_list.length ; i++){
+			var check_str = $(gshop_list[i]).text()
+			if(check_str == "拍賣品一覽"){
+				continue;
+			}
+			else if(check_str == "寵物拍賣品一覽"){
+				break;
+			}
+			var item_detail = $(gshop_list[i]).find("td")
+			check_str = $(item_detail[2]).text(); // 名稱
+			if(check_str == t_target){
+				check_str = $(item_detail[10]).text(); // 目前出價
+				check_buyer = $(item_detail[11]).text(); // 最高出價者
+				check_limit = $(item_detail[12]).text(); // 期限
+				save_log("目標:"+ t_target +" 目前出價:" + check_str + " 出價者為:" + check_buyer + " 剩餘時間:" + check_limit)
+				if(check_str == "0萬" && is_do){
+					$(item_detail[0]).find("input").click()
+					$(gshop_list).find("input[type='txt']").val("30000")
+					$(gshop_list).find("input[value='確定出價']").click();
+					await sleep(set_delay);
+					save_log("發現目標，已經進行競標!")
+					fastkeyform('town','fshop');
+				}
+				else{
+					if(check_buyer == user)
+						continue;
+					if(d_m%30 == 29 && check_limit == "剩餘0分"){
+						money_B = parseInt(check_str.split("億")[0])
+						money_W = parseInt(check_str.split("億")[1].split("萬")[0])
+						money = (money_B * 10000) + money_W
+						if (money <= 40010){
+							save_log("收割時間!!已經使用"+ money +"進行截標!")
+							$(item_detail[0]).find("input").click()
+							$(gshop_list).find("input[type='txt']").val(money+1)
+							$(gshop_list).find("input[value='確定出價']").click();
+							await sleep(set_delay);
+							fastkeyform('town','fshop');
+						}
+						else{
+							save_log("價格來到了"+check_str+"!截不起標!")
+						}
+					}
+				}
+			}
+		}
+		backtown();
+	}
+		
+}
+function find_iframe(id,target){
+	return $("iframe" + id).contents().find(target);
+}
+
+var user = $("#mname").text()
 remove_reload_script();
 save_log("月琴的腳本成功載入了唷ε٩(๑> ₃ <)۶з")
+save_log("歡迎你，" + user + " 祝福你今天也是收穫滿滿唷~ (ゝ∀･)")
 
