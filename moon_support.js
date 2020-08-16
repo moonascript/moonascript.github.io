@@ -382,11 +382,13 @@ async function global_tick(){
 	await sleep(1000);
 	global_tick();
 }
+
+var no_get_user = ["隱居","御魂笑光輝"];
 async function auto_buy_point(){
 	var d = new Date()
 	d_m = d.getMinutes()
 	d_s = d.getSeconds()
-	var is_do = (d_m%30 == 29 && d_s%30 == 28);
+	var is_do = (d_m%30 == 29 && d_s>=55);
 	//console.log(d_m+'分'+d_s+'秒')
 	if ( (d_m%5 == 1 && d_s%60 == 1) || is_do == true ){
 		
@@ -419,7 +421,7 @@ async function auto_buy_point(){
 					fastkeyform('town','fshop');
 				}
 				else{
-					if(check_buyer == user)
+					if(check_buyer == user && no_get_user.indexOf(check_buyer) != -1 )
 						continue;
 					if(d_m%30 == 29 && check_limit == "剩餘0分"){
 						money_B = parseInt(check_str.split("億")[0])
@@ -451,6 +453,7 @@ function find_iframe(id,target){
 
 var user = $("#mname").text()
 remove_reload_script();
+global_tick();
 save_log("月琴的腳本成功載入了唷ε٩(๑> ₃ <)۶з")
 save_log("歡迎你，" + user + " 祝福你今天也是收穫滿滿唷~ (ゝ∀･)")
 
