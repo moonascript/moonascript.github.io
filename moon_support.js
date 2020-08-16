@@ -375,7 +375,7 @@ async function global_tick(){
 	}
 	else{
 		if(c_sw == true){
-			save_log("關閉拍賣場截標模式，目標是[" + t_target + "] !")
+			save_log("關閉拍賣場截標模式.")
 			c_sw = false;
 		}
 	}
@@ -386,7 +386,7 @@ async function auto_buy_point(){
 	var d = new Date()
 	d_m = d.getMinutes()
 	d_s = d.getSeconds()
-	var is_do = (d_m%30 == 29 && d_s%30 == 25);
+	var is_do = (d_m%30 == 29 && d_s%30 == 28);
 	//console.log(d_m+'分'+d_s+'秒')
 	if ( (d_m%5 == 1 && d_s%60 == 1) || is_do == true ){
 		
@@ -426,9 +426,10 @@ async function auto_buy_point(){
 						money_W = parseInt(check_str.split("億")[1].split("萬")[0])
 						money = (money_B * 10000) + money_W
 						if (money <= 40010){
+							money = money+1;
 							save_log("收割時間!!已經使用"+ money +"進行截標!")
 							$(item_detail[0]).find("input").click()
-							$(gshop_list).find("input[type='txt']").val(money+1)
+							$(gshop_list).find("input[type='txt']").val(money)
 							$(gshop_list).find("input[value='確定出價']").click();
 							await sleep(set_delay);
 							fastkeyform('town','fshop');
