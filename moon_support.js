@@ -361,7 +361,12 @@ var t_sw = false
 var c_sw = false
 var t_target = "贊助點數100點"
 var c_target = ""
+var d_m , d_s , d_ms;
 async function global_tick(){
+	var d = new Date()
+	d_m = d.getMinutes()
+	d_s = d.getSeconds()
+	d_ms = d.getMilliseconds()
 	if(t_sw == true){
 		if(c_sw == false){
 			save_log("開啟拍賣場截標模式，目標是[" + t_target + "] !")
@@ -380,17 +385,16 @@ async function global_tick(){
 			c_sw = false;
 		}
 	}
-	await sleep(1000);
+	d = new Date()
+	d_ms = d.getMilliseconds()
+	await sleep(1000 - d_ms);
 	global_tick();
 }
 
-var no_get_user = ["隱居","御魂笑光輝","創造再生lolita"];
+var no_get_user = ["隱居","御魂笑光輝","創造再生lolita","獵戶座","光復香港，時代革命"];
 async function auto_buy_point(){
-	var d = new Date()
-	d_m = d.getMinutes()
-	d_s = d.getSeconds()
 	var is_do = (d_m%30 == 29 && d_s>=55);
-	//console.log(d_m+'分'+d_s+'秒')
+	// console.log(d_m+'分'+d_s+'秒'+d_ms+'ms')
 	if ( (d_m%5 == 1 && d_s%60 == 1) || is_do == true ){
 		
 		save_log('現在時間:' +d_m+'分'+d_s+'秒' + "，檢查拍賣場.");
@@ -448,7 +452,6 @@ async function auto_buy_point(){
 		}
 		backtown();
 	}
-		
 }
 function find_iframe(id,target){
 	return $("iframe" + id).contents().find(target);
