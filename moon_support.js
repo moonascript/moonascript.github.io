@@ -362,6 +362,7 @@ var c_sw = false
 var t_target = "贊助點數100點"
 var c_target = ""
 var d_m , d_s , d_ms;
+var this_round_buy = true;
 async function global_tick(){
 	var d = new Date()
 	d_m = d.getMinutes()
@@ -371,11 +372,13 @@ async function global_tick(){
 		if(c_sw == false){
 			save_log("開啟拍賣場截標模式，目標是[" + t_target + "] !")
 			c_target = t_target;
+			this_round_buy = true;
 			c_sw = true;
 		}
 		if (c_target != t_target){
-			c_target = t_target;
 			save_log("變更拍賣場目標，現在目標是[" + t_target + "] !")
+			c_target = t_target;
+			this_round_buy = true;
 		}
 		await auto_buy_point();
 	}
@@ -395,6 +398,14 @@ var no_get_user = ["隱居","御魂笑光輝","創造再生lolita","獵戶座","
 async function auto_buy_point(){
 	var is_do = (d_m%30 == 29 && d_s>=55);
 	// console.log(d_m+'分'+d_s+'秒'+d_ms+'ms')
+	if (this_round_buy == false){
+		if (d_m%30 >= 0 && d_s%60 <= 10){
+			this_round_buy = true
+		}
+		else{
+			return
+		}
+	}
 	if ( (d_m%5 == 1 && d_s%60 == 1) || is_do == true ){
 		
 		save_log('現在時間:' +d_m+'分'+d_s+'秒' + "，檢查拍賣場.");
@@ -426,7 +437,7 @@ async function auto_buy_point(){
 					fastkeyform('town','fshop');
 				}
 				else{
-					if(check_buyer == user && no_get_user.indexOf(check_buyer) != -1 ){
+					if(check_buyer == user || no_get_user.indexOf(check_buyer) != -1 ){
 						save_log("發現競標者為排除對象!");
 						continue;
 					}
@@ -445,6 +456,7 @@ async function auto_buy_point(){
 						}
 						else{
 							save_log("價格來到了"+check_str+"!截不起標!")
+							this_round_buy = false;
 						}
 					}
 				}
