@@ -468,11 +468,13 @@ async function auto_buy_point(){
 function find_iframe(id,target){
 	return $("iframe" + id).contents().find(target);
 }
-for(var i = 0 ; i<=10 ; i++){
-	fastkeyform('town','petup');
-	await sleep(100);
-	find_iframe('#actionframe','input.FC')[0].click()
-	await sleep(100);
+function set_pet(){
+	for(var i = 0 ; i<=10 ; i++){
+		fastkeyform('town','petup');
+		await sleep(100);
+		find_iframe('#actionframe','input.FC')[0].click()
+		await sleep(100);
+	}
 }
 
 var user = $("#mname").text()
