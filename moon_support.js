@@ -1,4 +1,4 @@
-var version = "Bata 1.0.22"
+var version = "Bata 1.0.23"
 var set_delay = 500;
 
 // 建立JQUERY
@@ -468,7 +468,7 @@ async function auto_buy_point(){
 function find_iframe(id,target){
 	return $("iframe" + id).contents().find(target);
 }
-function set_pet(){
+async function set_pet(){
 	for(var i = 0 ; i<=10 ; i++){
 		fastkeyform('town','petup');
 		await sleep(100);
