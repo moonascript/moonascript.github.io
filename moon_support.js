@@ -396,7 +396,7 @@ async function global_tick(){
 
 var no_get_user = ["隱居","御魂笑光輝","創造再生lolita","獵戶座","光復香港，時代革命"];
 async function auto_buy_point(){
-	var is_do = (d_m%30 == 29 && d_s>=55);
+	var is_do = (d_m%30 == 29 && d_s>=58);
 	// console.log(d_m+'分'+d_s+'秒'+d_ms+'ms')
 	if (this_round_buy == false){
 		if (d_m%30 >= 0 && d_s%60 <= 10){
@@ -445,8 +445,8 @@ async function auto_buy_point(){
 						money_B = parseInt(check_str.split("億")[0])
 						money_W = parseInt(check_str.split("億")[1].split("萬")[0])
 						money = (money_B * 10000) + money_W
-						if (money <= 40010){
-							money = money+1;
+						if (money <= 45010){
+							money = money + (1000 - money % 1000);
 							save_log("收割時間!!已經使用"+ money +"進行截標!")
 							$(item_detail[0]).find("input").click()
 							$(gshop_list).find("input[type='txt']").val(money)
@@ -467,6 +467,12 @@ async function auto_buy_point(){
 }
 function find_iframe(id,target){
 	return $("iframe" + id).contents().find(target);
+}
+for(var i = 0 ; i<=10 ; i++){
+	fastkeyform('town','petup');
+	await sleep(100);
+	find_iframe('#actionframe','input.FC')[0].click()
+	await sleep(100);
 }
 
 var user = $("#mname").text()
