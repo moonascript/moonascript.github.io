@@ -1,4 +1,4 @@
-
+var version = "Bata 1.0.22"
 var set_delay = 500;
 
 // 建立JQUERY
@@ -481,5 +481,6 @@ var user = $("#mname").text()
 remove_reload_script();
 global_tick();
 save_log("月琴的腳本成功載入了唷ε٩(๑> ₃ <)۶з")
+save_log("目前的版本號為 : " + version);
 save_log("歡迎你，" + user + " 祝福你今天也是收穫滿滿唷~ (ゝ∀･)")
 
