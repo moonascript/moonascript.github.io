@@ -1,4 +1,4 @@
-var version = "Bata 1.0.25"
+var version = "Bata 1.0.26"
 var set_delay = 500;
 
 // 建立JQUERY
@@ -397,7 +397,7 @@ async function global_tick(){
 var pass_this_turn = false;
 var no_get_user = ["隱居","御魂笑光輝","創造再生lolita","獵戶座","光復香港，時代革命"];
 async function auto_buy_point(){
-	var is_do = (d_m%30 == 29 && d_s>=59);
+	var is_do = (d_m%30 == 29 && d_s>=58);
 	// console.log(d_m+'分'+d_s+'秒'+d_ms+'ms')
 	if (this_round_buy == false){
 		if (d_m%30 >= 0 && d_s%60 <= 10){
@@ -455,15 +455,15 @@ async function auto_buy_point(){
 						if (money <= 45010){
 							money = money + (1000 - money % 1000);
 							save_log("收割時間!!已經使用"+ money +"進行截標!")
+							await sleep(set_delay);
 							$(item_detail[0]).find("input").click()
 							$(gshop_list).find("input[type='txt']").val(money)
 							$(gshop_list).find("input[value='確定出價']").click();
-							await sleep(set_delay);
 							pass_this_turn = true;
 							fastkeyform('town','fshop');
 						}
 						else{
-							save_log("價格來到了"+check_str+"!截不起標!")
+							save_log("價格來到了"+check_str+"!截不起標! 目前買家為 " + check_buyer)
 							this_round_buy = false;
 						}
 					}
@@ -493,6 +493,28 @@ function check_status(){
 	for(var i = 0 ; i<status_count ; i++){
 		my_status[status_list[i]] = parseInt($("#chara_max" + i).text().split("(")[0])
 		save_log(status_list[i] + ':' + my_status[status_list[i]]);
+	}
+}
+async function change_job(){
+	fastkeyform('status','change')
+	await sleep(set_delay);
+	var table = find_iframe("#actionframe","table table.tc");
+	var list = $(table[0]).find("tr")
+	for(var i=0 ; i<list.length ; i++){
+		var check_input = $(list[i]).find("input");
+		if(check_input.length == 0){
+			continue;
+		}
+		var list_item = $(list[i]).find("td");
+		var job_name = $(list_item[1]).text();
+		save_log(job_name + ' = ' + (job_name == "熾天使"))
+		if(job_name == "熾天使"){
+			$(check_input).click();
+			$(table[0]).find("input[value='轉職']").click();
+			await sleep(set_delay);
+			backtown();
+			break;
+		}
 	}
 }
 
