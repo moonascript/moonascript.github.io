@@ -1,4 +1,4 @@
-var version = "Bata 1.0.23"
+var version = "Bata 1.0.24"
 var set_delay = 500;
 
 // 建立JQUERY
@@ -394,9 +394,10 @@ async function global_tick(){
 	global_tick();
 }
 
+var pass_this_turn = false;
 var no_get_user = ["隱居","御魂笑光輝","創造再生lolita","獵戶座","光復香港，時代革命"];
 async function auto_buy_point(){
-	var is_do = (d_m%30 == 29 && d_s>=58);
+	var is_do = (d_m%30 == 29 && d_s>=59);
 	// console.log(d_m+'分'+d_s+'秒'+d_ms+'ms')
 	if (this_round_buy == false){
 		if (d_m%30 >= 0 && d_s%60 <= 10){
@@ -445,6 +446,12 @@ async function auto_buy_point(){
 						money_B = parseInt(check_str.split("億")[0])
 						money_W = parseInt(check_str.split("億")[1].split("萬")[0])
 						money = (money_B * 10000) + money_W
+						if(pass_this_turn == true){
+							save_log("上一輪已經截標，暫停一輪，此輪由" + check_buyer + "拿下!!");
+							pass_this_turn = false;
+							this_round_buy = false;
+							continue;
+						}
 						if (money <= 45010){
 							money = money + (1000 - money % 1000);
 							save_log("收割時間!!已經使用"+ money +"進行截標!")
@@ -452,6 +459,7 @@ async function auto_buy_point(){
 							$(gshop_list).find("input[type='txt']").val(money)
 							$(gshop_list).find("input[value='確定出價']").click();
 							await sleep(set_delay);
+							pass_this_turn = true;
 							fastkeyform('town','fshop');
 						}
 						else{
