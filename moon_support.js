@@ -1,4 +1,4 @@
-var version = "Bata 1.0.24"
+var version = "Bata 1.0.25"
 var set_delay = 500;
 
 // 建立JQUERY
@@ -187,7 +187,7 @@ async function buy_item(value){
 
 async function buy(value){
 	var target = "";
-	var search_list = ["武器店","防具店","飾品店"];
+	var search_list = Object.keys(shop_list);
 	for(i = 0 ; i<search_list.length ; i++){
 		if(shop_list[search_list[i]].item.indexOf(value) != -1)
 			target = search_list[i];
@@ -482,6 +482,17 @@ async function set_pet(){
 		await sleep(100);
 		find_iframe('#actionframe','input.FC')[0].click()
 		await sleep(100);
+	}
+}
+var my_status = {
+	"str":0,"vit":0,"int":0,"wis":0,"luk":0,"agi":0
+}
+function check_status(){
+	var status_list = Object.keys(my_status);
+	var status_count = status_list.length;
+	for(var i = 0 ; i<status_count ; i++){
+		my_status[status_list[i]] = parseInt($("#chara_max" + i).text().split("(")[0])
+		save_log(status_list[i] + ':' + my_status[status_list[i]]);
 	}
 }
 
