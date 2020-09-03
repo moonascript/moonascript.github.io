@@ -1,4 +1,4 @@
-var version = "Bata 1.0.26"
+var version = "Bata 1.0.27"
 var set_delay = 500;
 
 // 建立JQUERY
@@ -388,6 +388,7 @@ async function global_tick(){
 			c_sw = false;
 		}
 	}
+	await change_job();
 	d = new Date()
 	d_ms = d.getMilliseconds()
 	await sleep(1000 - d_ms);
@@ -397,7 +398,7 @@ async function global_tick(){
 var pass_this_turn = false;
 var no_get_user = ["隱居","御魂笑光輝","創造再生lolita","獵戶座","光復香港，時代革命"];
 async function auto_buy_point(){
-	var is_do = (d_m%30 == 29 && d_s>=58);
+	var is_do = (d_m%30 == 29 && d_s>=57);
 	// console.log(d_m+'分'+d_s+'秒'+d_ms+'ms')
 	if (this_round_buy == false){
 		if (d_m%30 >= 0 && d_s%60 <= 10){
@@ -455,10 +456,10 @@ async function auto_buy_point(){
 						if (money <= 45010){
 							money = money + (1000 - money % 1000);
 							save_log("收割時間!!已經使用"+ money +"進行截標!")
-							await sleep(set_delay);
 							$(item_detail[0]).find("input").click()
 							$(gshop_list).find("input[type='txt']").val(money)
 							$(gshop_list).find("input[value='確定出價']").click();
+							await sleep(set_delay);
 							pass_this_turn = true;
 							fastkeyform('town','fshop');
 						}
@@ -487,7 +488,7 @@ async function set_pet(){
 var my_status = {
 	"str":0,"vit":0,"int":0,"wis":0,"luk":0,"agi":0
 }
-function check_status(){
+function get_status(){
 	var status_list = Object.keys(my_status);
 	var status_count = status_list.length;
 	for(var i = 0 ; i<status_count ; i++){
@@ -495,7 +496,30 @@ function check_status(){
 		save_log(status_list[i] + ':' + my_status[status_list[i]]);
 	}
 }
+function check_status(min_status){
+	get_status();
+	var status_list = Object.keys(my_status);
+	var status_count = status_list.length;
+	for(var i = 0 ; i<status_count ; i++){
+		var tmp_status = my_status[status_list[i]];
+		if(tmp_status < min_status){
+			return true;
+		}
+	}
+	return false;
+}
+
+var this_turn_change_job = false;
 async function change_job(){
+	var now_lv = $("#mlv").text();
+	if(now_lv != 100){
+		// save_log("還沒100等，現在等級為" + now_lv);
+		return;
+	}
+	if(this_turn_change_job != true){
+		save_log("不需要轉職");
+		return;
+	}
 	fastkeyform('status','change')
 	await sleep(set_delay);
 	var table = find_iframe("#actionframe","table table.tc");
@@ -513,6 +537,17 @@ async function change_job(){
 			$(table[0]).find("input[value='轉職']").click();
 			await sleep(set_delay);
 			backtown();
+			await sleep(set_delay);
+			this_turn_change_job = check_status(950);
+			if(this_turn_change_job==true){
+				save_log("本轉能力不及指定數值，滿等候繼續轉職");
+			}
+			else{
+				
+				save_log("本轉能力達到指定數值，停止自動戰鬥");
+				$("#StopButton").click();
+				$("#autoattack").click();
+			}
 			break;
 		}
 	}
