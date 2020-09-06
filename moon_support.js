@@ -1,4 +1,4 @@
-var version = "Bata 1.0.32"
+var version = "Bata 1.0.33"
 var set_delay = 500;
 
 // 建立JQUERY
@@ -81,7 +81,6 @@ void(function(){
 	}
 })()
 
-var first_init = true;
 function init_msg_history(){
 	// 增加歷史紀錄
 	// 國內
@@ -98,29 +97,37 @@ function init_msg_history(){
 	var br_list = $(block_msg_con).find("br");
 	$(br_list[0]).before("<a id='msg_all_change' onclick='change_msg_all()' style='color: blue; cursor: pointer;'>歷史訊息</a>");
 	check_msg_all();
-	
-	first_init = false;
 }
 function check_msg_con(){
+	var is_add = false;
 	var msg_list = $("#mes_con").find("tr");
 	for(var i=msg_list.length ; i>=0 ; i--){
 		if($(msg_list[i]).attr("recorded") == null){
-			if(first_init != true){
-				$("#mes_con_his").prepend($(msg_list[i]).clone());
-			}
+			is_add = true;
+			$("#mes_con_his").prepend($(msg_list[i]).clone().hide());
 			$(msg_list[i]).attr("recorded","recorded");
 		}
 	}
+	if(is_add == true){
+		var record_count = $("#mes_con").find("tr").length;
+		var show_list = $("#mes_con_his").find("tr:lt(-"+record_count+")");
+		$(show_list).show();
+	}
 }
 function check_msg_all(){
+	var is_add = false;
 	var msg_list = $("#mes_all").find("tr");
 	for(var i=msg_list.length ; i>=0 ; i--){
 		if($(msg_list[i]).attr("recorded") == null){
-			if(first_init != true){
-				$("#mes_all_his").prepend($(msg_list[i]).clone());
-			}
+			is_add = true;
+			$("#mes_all_his").prepend($(msg_list[i]).clone().hide());
 			$(msg_list[i]).attr("recorded","recorded");
 		}
+	}
+	if(is_add == true){
+		var record_count = $("#mes_con").find("tr").length;
+		var show_list = $("#mes_con_his").find("tr:lt(-"+record_count+")");
+		$(show_list).show();
 	}
 }
 
