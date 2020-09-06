@@ -1,4 +1,4 @@
-var version = "Bata 1.0.27"
+var version = "Bata 1.0.28"
 var set_delay = 500;
 
 // 建立JQUERY
@@ -396,7 +396,7 @@ async function global_tick(){
 }
 
 var pass_this_turn = false;
-var no_get_user = ["隱居","御魂笑光輝","創造再生lolita","獵戶座","光復香港，時代革命"];
+var no_get_user = ["琇~*","御魂笑光輝","創造再生lolita","獵戶座","光復香港，時代革命"];
 async function auto_buy_point(){
 	var is_do = (d_m%30 == 29 && d_s>=57);
 	// console.log(d_m+'分'+d_s+'秒'+d_ms+'ms')
@@ -517,7 +517,7 @@ async function change_job(){
 		return;
 	}
 	if(this_turn_change_job != true){
-		save_log("不需要轉職");
+		// save_log("不需要轉職");
 		return;
 	}
 	fastkeyform('status','change')
@@ -531,7 +531,7 @@ async function change_job(){
 		}
 		var list_item = $(list[i]).find("td");
 		var job_name = $(list_item[1]).text();
-		save_log(job_name + ' = ' + (job_name == "熾天使"))
+		// save_log(job_name + ' = ' + (job_name == "熾天使"))
 		if(job_name == "熾天使"){
 			$(check_input).click();
 			$(table[0]).find("input[value='轉職']").click();
@@ -543,7 +543,6 @@ async function change_job(){
 				save_log("本轉能力不及指定數值，滿等候繼續轉職");
 			}
 			else{
-				
 				save_log("本轉能力達到指定數值，停止自動戰鬥");
 				$("#StopButton").click();
 				$("#autoattack").click();
