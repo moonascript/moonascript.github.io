@@ -1,4 +1,4 @@
-var version = "Bata 1.0.30"
+var version = "Bata 1.0.31"
 var set_delay = 500;
 
 // 建立JQUERY
@@ -88,14 +88,14 @@ function init_msg_history(){
 	$("#mes_con_his").hide();
 	var block_msg_con = $("#mes_con").parent().parent();
 	var br_list = $(block_msg_con).find("br");
-	$(br_list[0]).before("<a id='msg_con_change' onclick='change_meg_con()' style='color: blue; cursor: pointer;'>歷史訊息</a>");
+	$(br_list[0]).before("<a id='msg_con_change' onclick='change_msg_con()' style='color: blue; cursor: pointer;'>歷史訊息</a>");
 	check_msg_con();
 	// 世界
 	$("#mes_all").after("<table id='mes_all_his' border='0' bgcolor='#883300' width='100%' ></table>")
 	$("#mes_all_his").hide();
 	var block_msg_con = $("#mes_all").parent().parent();
 	var br_list = $(block_msg_con).find("br");
-	$(br_list[0]).before("<a id='msg_all_change' onclick='change_mes_all()' style='color: blue; cursor: pointer;'>歷史訊息</a>");
+	$(br_list[0]).before("<a id='msg_all_change' onclick='change_msg_all()' style='color: blue; cursor: pointer;'>歷史訊息</a>");
 	check_msg_all();
 }
 function check_msg_con(){
@@ -117,7 +117,7 @@ function check_msg_all(){
 	}
 }
 
-function change_meg_con(){
+function change_msg_con(){
 	if($("#mes_con").css("display") == "none"){
 		$("#mes_con").show();
 		$("#mes_con_his").hide();
@@ -129,7 +129,7 @@ function change_meg_con(){
 		$("#msg_con_change").text("關閉歷史訊息")
 	}
 }
-function change_meg_all(){
+function change_msg_all(){
 	if($("#mes_all").css("display") == "none"){
 		$("#mes_all").show();
 		$("#mes_all_his").hide();
