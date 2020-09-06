@@ -1,4 +1,4 @@
-var version = "Bata 1.0.34"
+var version = "Bata 1.0.35"
 var set_delay = 500;
 
 // 建立JQUERY
@@ -126,9 +126,9 @@ function check_msg_all(){
 		}
 	}
 	if(is_add == true){
-		var record_count = $("#mes_con").find("tr").length;
+		var record_count = $("#mes_all").find("tr").length;
 		record_count -= 1;
-		var show_list = $("#mes_con_his").find("tr:gt("+record_count+")");
+		var show_list = $("#mes_all_his").find("tr:gt("+record_count+")");
 		$(show_list).show();
 	}
 }
