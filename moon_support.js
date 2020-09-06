@@ -1,4 +1,4 @@
-var version = "Bata 1.0.28"
+var version = "Bata 1.0.29"
 var set_delay = 500;
 
 // 建立JQUERY
@@ -79,8 +79,39 @@ void(function(){
 			$("#moon_log").append(li_item)
 		}
 	}
-
 })()
+
+function init_msg_history(){
+	// 增加歷史紀錄
+	// 國內
+	$("#mes_con").after("<table id='mes_con_his' border='0' bgcolor='#883300' width='100%' ></table>")
+	var block_msg_con = $("#mes_con").parent().parent();
+	var br_list = $(block_msg_con).find("br");
+	$(br_list[0]).before("<a id='msg_con_change' onclick='change_meg_con()' style='color: blue; cursor: pointer; display:none;'>歷史訊息</a>");
+	check_msg_con();
+}
+function check_msg_con(){
+	var msg_list = $("#mes_con").find("tr");
+	for(var i=msg_list.length ; i>=0 ; i--){
+		if($(msg_list[i]).attr("recorded") == null){
+			$("#mes_con_his").prepend($(msg_list[i]).clone());
+			$(msg_list[i]).attr("recorded","recorded");
+		}
+	}
+}
+
+function change_meg_con(){
+	if($("#mes_con").css("display") == "none"){
+		$("#mes_con").show();
+		$("#mes_con_his").hide();
+		$("#msg_con_change").text("歷史訊息")
+	}
+	else{
+		$("#mes_con").hide();
+		$("#mes_con_his").show();
+		$("#msg_con_change").text("關閉歷史訊息")
+	}
+}
 
 index = {
   "name":{"val":["冒險者中心","赫菲斯托斯","時雨鎮","風車鎮","星原鎮","雷雲鎮","明日鎮","暗夜鎮","伏爾肯","阿帕斯","艾奧羅斯","雅特蜜絲","宙斯","阿波羅","尼克斯","希費斯特斯","水之都","風之都","閃耀之都","雷電之都","光之都","夜鶯之都"]}
@@ -388,7 +419,10 @@ async function global_tick(){
 			c_sw = false;
 		}
 	}
+	
 	await change_job();
+	check_msg_con();
+	
 	d = new Date()
 	d_ms = d.getMilliseconds()
 	await sleep(1000 - d_ms);
@@ -554,6 +588,7 @@ async function change_job(){
 
 var user = $("#mname").text()
 remove_reload_script();
+init_msg_history();
 global_tick();
 save_log("月琴的腳本成功載入了唷ε٩(๑> ₃ <)۶з")
 save_log("目前的版本號為 : " + version);
