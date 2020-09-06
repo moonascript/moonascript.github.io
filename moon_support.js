@@ -1,4 +1,4 @@
-var version = "Bata 1.0.33"
+var version = "Bata 1.0.34"
 var set_delay = 500;
 
 // 建立JQUERY
@@ -110,7 +110,8 @@ function check_msg_con(){
 	}
 	if(is_add == true){
 		var record_count = $("#mes_con").find("tr").length;
-		var show_list = $("#mes_con_his").find("tr:lt(-"+record_count+")");
+		record_count -= 1;
+		var show_list = $("#mes_con_his").find("tr:gt("+record_count+")");
 		$(show_list).show();
 	}
 }
@@ -126,7 +127,8 @@ function check_msg_all(){
 	}
 	if(is_add == true){
 		var record_count = $("#mes_con").find("tr").length;
-		var show_list = $("#mes_con_his").find("tr:lt(-"+record_count+")");
+		record_count -= 1;
+		var show_list = $("#mes_con_his").find("tr:gt("+record_count+")");
 		$(show_list).show();
 	}
 }
