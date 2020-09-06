@@ -1,4 +1,4 @@
-var version = "Bata 1.0.29"
+var version = "Bata 1.0.30"
 var set_delay = 500;
 
 // 建立JQUERY
@@ -85,16 +85,33 @@ function init_msg_history(){
 	// 增加歷史紀錄
 	// 國內
 	$("#mes_con").after("<table id='mes_con_his' border='0' bgcolor='#883300' width='100%' ></table>")
+	$("#mes_con_his").hide();
 	var block_msg_con = $("#mes_con").parent().parent();
 	var br_list = $(block_msg_con).find("br");
-	$(br_list[0]).before("<a id='msg_con_change' onclick='change_meg_con()' style='color: blue; cursor: pointer; display:none;'>歷史訊息</a>");
+	$(br_list[0]).before("<a id='msg_con_change' onclick='change_meg_con()' style='color: blue; cursor: pointer;'>歷史訊息</a>");
 	check_msg_con();
+	// 世界
+	$("#mes_all").after("<table id='mes_all_his' border='0' bgcolor='#883300' width='100%' ></table>")
+	$("#mes_all_his").hide();
+	var block_msg_con = $("#mes_all").parent().parent();
+	var br_list = $(block_msg_con).find("br");
+	$(br_list[0]).before("<a id='msg_all_change' onclick='change_mes_all()' style='color: blue; cursor: pointer;'>歷史訊息</a>");
+	check_msg_all();
 }
 function check_msg_con(){
 	var msg_list = $("#mes_con").find("tr");
 	for(var i=msg_list.length ; i>=0 ; i--){
 		if($(msg_list[i]).attr("recorded") == null){
 			$("#mes_con_his").prepend($(msg_list[i]).clone());
+			$(msg_list[i]).attr("recorded","recorded");
+		}
+	}
+}
+function check_msg_all(){
+	var msg_list = $("#mes_all").find("tr");
+	for(var i=msg_list.length ; i>=0 ; i--){
+		if($(msg_list[i]).attr("recorded") == null){
+			$("#mes_all_his").prepend($(msg_list[i]).clone());
 			$(msg_list[i]).attr("recorded","recorded");
 		}
 	}
@@ -110,6 +127,18 @@ function change_meg_con(){
 		$("#mes_con").hide();
 		$("#mes_con_his").show();
 		$("#msg_con_change").text("關閉歷史訊息")
+	}
+}
+function change_meg_all(){
+	if($("#mes_all").css("display") == "none"){
+		$("#mes_all").show();
+		$("#mes_all_his").hide();
+		$("#msg_all_change").text("歷史訊息")
+	}
+	else{
+		$("#mes_all").hide();
+		$("#mes_all_his").show();
+		$("#msg_all_change").text("關閉歷史訊息")
 	}
 }
 
@@ -422,6 +451,7 @@ async function global_tick(){
 	
 	await change_job();
 	check_msg_con();
+	check_msg_all();
 	
 	d = new Date()
 	d_ms = d.getMilliseconds()
