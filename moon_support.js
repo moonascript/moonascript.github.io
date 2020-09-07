@@ -1,4 +1,4 @@
-var version = "Bata 1.0.35"
+var version = "Bata 1.0.36"
 var set_delay = 500;
 
 // 建立JQUERY
@@ -157,6 +157,43 @@ function change_msg_all(){
 		$("#msg_all_change").text("關閉歷史訊息")
 	}
 }
+
+var msg_list = [];
+var user_msg_list = [];
+function record_msg(){
+	maplog_h = $("#maplog").html().split("<br>");
+	maplog_t = $("#maplog").text().split("●");
+	maplog_h.pop();
+	maplog_t.shift();
+	for(var i=0 ; i<10 ; i++){
+		var tmp_str = maplog_t[i];
+		if(tmp_str.indexOf("[打寶]") != -1){
+			if(msg_list.indexOf(tmp_str) == -1){
+				msg_list.push(tmp_str);
+				if(tmp_str.indexOf(user) != -1){
+					user_msg_list.push(tmp_str);
+				}
+			}
+			else{
+				var this_count = count_item(maplog_t)
+				var his_count = count_item(msg_list)
+				if(this_count[tmp_str] != his_count[tmp_str]){
+					msg_list.push(tmp_str);
+					if(tmp_str.indexOf(user) != -1){
+						user_msg_list.push(tmp_str);
+					}
+				}
+			}
+		}
+	}
+}
+
+function count_item(arr){
+	var counts = {};
+	arr.forEach(function(x) { counts[x] = (counts[x] || 0)+1; });
+	return counts;
+}
+
 
 index = {
   "name":{"val":["冒險者中心","赫菲斯托斯","時雨鎮","風車鎮","星原鎮","雷雲鎮","明日鎮","暗夜鎮","伏爾肯","阿帕斯","艾奧羅斯","雅特蜜絲","宙斯","阿波羅","尼克斯","希費斯特斯","水之都","風之都","閃耀之都","雷電之都","光之都","夜鶯之都"]}
@@ -468,6 +505,7 @@ async function global_tick(){
 	await change_job();
 	check_msg_con();
 	check_msg_all();
+	record_msg();
 	
 	d = new Date()
 	d_ms = d.getMilliseconds()
@@ -560,9 +598,9 @@ function find_iframe(id,target){
 async function set_pet(){
 	for(var i = 0 ; i<=10 ; i++){
 		fastkeyform('town','petup');
-		await sleep(100);
+		await sleep(400);
 		find_iframe('#actionframe','input.FC')[0].click()
-		await sleep(100);
+		await sleep(400);
 	}
 }
 var my_status = {
