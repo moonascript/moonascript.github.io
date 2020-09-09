@@ -160,6 +160,9 @@ function change_msg_all(){
 
 var msg_list = [];
 var user_msg_list = [];
+var open_list = [];
+var change_list = [];
+var activity_list = [];
 function record_msg(){
 	maplog_h = $("#maplog").html().split("<br>");
 	maplog_t = $("#maplog").text().split("●");
@@ -185,7 +188,295 @@ function record_msg(){
 				}
 			}
 		}
+		if(tmp_str.indexOf("[寶箱]") != -1){
+			if(open_list.indexOf(tmp_str) == -1){
+				open_list.push(tmp_str);
+			}
+			else{
+				var this_count = count_item(maplog_t)
+				var his_count = count_item(open_list)
+				if(this_count[tmp_str] != his_count[tmp_str]){
+					open_list.push(tmp_str);
+				}
+			}
+		}
+		if(tmp_str.indexOf("[活動物品兌換]") != -1){
+			if(change_list.indexOf(tmp_str) == -1){
+				change_list.push(tmp_str);
+			}
+			else{
+				var this_count = count_item(maplog_t)
+				var his_count = count_item(change_list)
+				if(this_count[tmp_str] != his_count[tmp_str]){
+					change_list.push(tmp_str);
+				}
+			}
+		}
+		if(tmp_str.indexOf("[活動]") != -1){
+			if(activity_list.indexOf(tmp_str) == -1){
+				activity_list.push(tmp_str);
+			}
+			else{
+				var this_count = count_item(maplog_t)
+				var his_count = count_item(activity_list)
+				if(this_count[tmp_str] != his_count[tmp_str]){
+					activity_list.push(tmp_str);
+				}
+			}
+		}
 	}
+}
+
+function show_text(arr,find_text){
+	var count=0;
+	for(var i=0 ; i<arr.length ; i++){
+		if(arr[i].indexOf(find_text) != -1){
+			console.log(arr[i]);
+			count++
+		}
+	}
+	console.log("總共出現 " + count + " 次");
+}
+
+var pet = function(){
+    this.pow=0;
+    this.def=0;
+    this.spd=0;
+	this.end = false;
+}
+var target = new pet();
+pet_info = {
+	"火":{
+		"pow":30,"def":0,"spd":0
+	},
+	"水":{
+		"pow":0,"def":30,"spd":0
+	},
+	"風":{
+		"pow":0,"def":0,"spd":15
+	},
+	"星":{
+		"pow":15,"def":15,"spd":0
+	},
+	"雷":{
+		"pow":20,"def":0,"spd":5
+	},
+	"光":{
+		"pow":10,"def":10,"spd":5
+	},
+	"闇":{
+		"pow":10,"def":10,"spd":5
+	}
+}
+pet_up = {
+	"rank_0":{
+		"火":{
+			"卵":{"status":{"pow":2,"def":0,"spd":0}}
+		},
+		"水":{
+			"卵":{"status":{"pow":0,"def":2,"spd":0}}
+		},
+		"風":{
+			"卵":{"status":{"pow":0,"def":0,"spd":1}}
+		},
+		"星":{
+			"卵":{"status":{"pow":1,"def":1,"spd":0}}
+		},
+		"雷":{
+			"卵":{"status":{"pow":0,"def":0,"spd":1}}
+		},
+		"光":{
+			"卵":{"status":{"pow":0,"def":2,"spd":0}}
+		},
+		"闇":{
+			"卵":{"status":{"pow":2,"def":0,"spd":0}}
+		}
+	},
+	"rank_1":{
+		"火":{
+			"精靈":{"status":{"pow":4,"def":0,"spd":0}}
+		},
+		"水":{
+			"精靈":{"status":{"pow":0,"def":4,"spd":0}}
+		},
+		"風":{
+			"精靈":{"status":{"pow":0,"def":0,"spd":2}}
+		},
+		"星":{
+			"精靈":{"status":{"pow":4,"def":4,"spd":0}}
+		},
+		"雷":{
+			"精靈":{"status":{"pow":0,"def":0,"spd":2}}
+		},
+		"光":{
+			"精靈":{"status":{"pow":0,"def":4,"spd":0}}
+		},
+		"闇":{
+			"精靈":{"status":{"pow":4,"def":0,"spd":0}}
+		}
+	},
+	"rank_2":{
+		"火":{
+			"妖":{"status":{"pow":8,"def":1,"spd":1}},
+			"獸":{"status":{"pow":6,"def":2,"spd":0}}
+		},
+		"水":{
+			"妖":{"status":{"pow":1,"def":8,"spd":1}},
+			"獸":{"status":{"pow":2,"def":6,"spd":0}}
+		},
+		"風":{
+			"妖":{"status":{"pow":1,"def":1,"spd":4}},
+			"獸":{"status":{"pow":2,"def":2,"spd":2}}
+		},
+		"星":{
+			"妖":{"status":{"pow":5,"def":5,"spd":0}},
+			"獸":{"status":{"pow":4,"def":4,"spd":1}}
+		},
+		"雷":{
+			"妖":{"status":{"pow":1,"def":1,"spd":4}},
+			"獸":{"status":{"pow":2,"def":2,"spd":2}}
+		},
+		"光":{
+			"妖":{"status":{"pow":1,"def":8,"spd":1}},
+			"獸":{"status":{"pow":2,"def":6,"spd":0}}
+		},
+		"闇":{
+			"妖":{"status":{"pow":8,"def":1,"spd":1}},
+			"獸":{"status":{"pow":6,"def":2,"spd":0}}
+		}
+	},
+	"rank_3":{
+		"火":{
+			"魔":{"status":{"pow":12,"def":2,"spd":2}},
+			"龍":{"status":{"pow":10,"def":2,"spd":2}},
+			"巨":{"status":{"pow":8 ,"def":2,"spd":2}}
+		},
+		"水":{
+			"魔":{"status":{"pow":2,"def":12,"spd":2}},
+			"龍":{"status":{"pow":2,"def":10,"spd":2}},
+			"巨":{"status":{"pow":2,"def":8 ,"spd":2}}
+		},
+		"風":{
+			"魔":{"status":{"pow":2,"def":2,"spd":7}},
+			"龍":{"status":{"pow":2,"def":2,"spd":6}},
+			"巨":{"status":{"pow":2,"def":2,"spd":5}}
+		},
+		"星":{
+			"魔":{"status":{"pow":7,"def":7,"spd":2}},
+			"龍":{"status":{"pow":6,"def":6,"spd":2}},
+			"巨":{"status":{"pow":5,"def":5,"spd":2}}
+		},
+		"雷":{
+			"魔":{"status":{"pow":6,"def":6,"spd":3}},
+			"龍":{"status":{"pow":5,"def":5,"spd":3}},
+			"巨":{"status":{"pow":5,"def":4,"spd":3}}
+		},
+		"光":{
+			"魔":{"status":{"pow":2,"def":12,"spd":2}},
+			"龍":{"status":{"pow":2,"def":10,"spd":2}},
+			"巨":{"status":{"pow":2,"def":8 ,"spd":2}}
+		},
+		"闇":{
+			"魔":{"status":{"pow":12,"def":2,"spd":2}},
+			"龍":{"status":{"pow":10,"def":2,"spd":2}},
+			"巨":{"status":{"pow":8 ,"def":2,"spd":2}}
+		}
+	},
+	"rank_4":{
+		"火":{
+			"嗜血魔":{"status":{"pow":10,"def":11,"spd":2}},
+			"紅龍王":{"status":{"pow":15,"def":10,"spd":0}},
+			"火神"  :{"status":{"pow":18,"def":7 ,"spd":0}},
+			"毀滅者":{"status":{"pow":30,"def":10,"spd":1}}
+		},
+		"水":{
+			"吸噬者":{"status":{"pow":10,"def":15,"spd":0}},
+			"海龍王":{"status":{"pow":0 ,"def":19,"spd":3}},
+			"水神"  :{"status":{"pow":10,"def":11,"spd":2}},
+			"創造者":{"status":{"pow":10,"def":30,"spd":1}}
+		},
+		"風":{
+			"狂風魔"  :{"status":{"pow":8,"def":5,"spd":6}},
+			"暴風龍王":{"status":{"pow":5,"def":4,"spd":8}},
+			"風神"    :{"status":{"pow":5,"def":0,"spd":10}},
+			"追風者"  :{"status":{"pow":6,"def":6,"spd":15}}
+		},
+		"星":{
+			"咒靈":{"status":{"pow":10,"def":11,"spd":1}},
+			"神龍":{"status":{"pow":10,"def":11,"spd":2}},
+			"星神":{"status":{"pow":10,"def":11,"spd":3}},
+			"天靈":{"status":{"pow":18,"def":18,"spd":4}}
+		},
+		"雷":{
+			"審判者"    :{"status":{"pow":15,"def":4 ,"spd":3}},
+			"皇龍"      :{"status":{"pow":17,"def":2 ,"spd":3}},
+			"雷神"      :{"status":{"pow":17,"def":2 ,"spd":5}},
+			"宙斯的化身":{"status":{"pow":20,"def":10,"spd":6}}
+		},
+		"光":{
+			"幽冥使者":{"status":{"pow":6 ,"def":10,"spd":4}},
+			"白龍王"  :{"status":{"pow":5 ,"def":12,"spd":4}},
+			"光神"    :{"status":{"pow":5 ,"def":13,"spd":5}},
+			"大天使"  :{"status":{"pow":12,"def":18,"spd":6}}
+		},
+		"闇":{
+			"吸血鬼":{"status":{"pow":12,"def":5 ,"spd":4}},
+			"黑龍王":{"status":{"pow":12,"def":5 ,"spd":5}},
+			"闇神"  :{"status":{"pow":14,"def":3 ,"spd":5}},
+			"閻羅王":{"status":{"pow":18,"def":10,"spd":7}}
+		}
+	}
+}
+function check_pet_status(type,t_lv,t_pow,t_def,t_spd){
+	var pow = pet_info[type]["pow"];
+	var def = pet_info[type]["def"];
+	var spd = pet_info[type]["spd"];
+	target.pow = t_pow;
+	target.def = t_def;
+	target.spd = t_spd;
+	target.end = false;
+	go_check_pet(type,t_lv);
+}
+function go_check_pet(type,level,pow=pet_info[type]["pow"],def=pet_info[type]["def"],spd=pet_info[type]["spd"],search_level=0,upgrade_str="",index=0){
+	if(target.end == true){
+		return;
+	}
+	var check_pet = Object.keys(pet_up["rank_"+search_level][type])
+	// console.log(check_pet)
+	for(var i=index ; i<check_pet.length ; i++){
+		// console.log(i)
+		var add_level = 10;
+		var is_last = false;
+		if(search_level+1 == Object.keys(pet_up).length){
+			add_level = level;
+			is_last = true;
+		}
+		var pow_add = pow + pet_up["rank_"+search_level][type][check_pet[i]]["status"].pow * add_level;
+		var def_add = def + pet_up["rank_"+search_level][type][check_pet[i]]["status"].def * add_level;
+		var spd_add = spd + pet_up["rank_"+search_level][type][check_pet[i]]["status"].spd * add_level;
+		// console.log(pow_add + ' ' +def_add + ' ' + spd_add);
+		if(pow_add == target.pow && def_add == target.def && spd_add == target.spd){
+			var answer = upgrade_str + check_pet[i];
+			console.log(answer);
+			target.end = true;
+			return;
+		}
+		else{
+			if(is_last == true){
+				if(i==check_pet.length-1){
+					return;
+				}
+			}
+			else{
+				//console.log("現在是:"+upgrade_str);
+				go_check_pet(type,level,pow_add,def_add,spd_add,search_level+1,upgrade_str+check_pet[i]+"->");
+				if(target.end == true){
+					return;
+				} 
+			}
+		}
+	}
+	// console.log(pow + ' ' +def + ' ' + spd);
 }
 
 function count_item(arr){
