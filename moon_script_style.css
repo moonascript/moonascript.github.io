@@ -1,15 +1,15 @@
 /*#region 清單*/
-ul.pagination {
+ul.moon_command_list {
     display: inline-block;
     padding: 0;
     margin: 0;
 }
 
-ul.pagination li {
+ul.moon_command_list li {
     display: inline;
 }
 
-ul.pagination li a {
+ul.moon_command_list li a {
     color: black;
     float: left;
     padding: 8px 16px;
@@ -20,25 +20,25 @@ ul.pagination li a {
 /*#endregion */
 
 /*#region 前後的圓弧*/
-.pagination li:first-child a {
+.moon_command_list li:first-child a {
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
 }
 
-.pagination li:last-child a {
+.moon_command_list li:last-child a {
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
 }
 /*#endregion */
 
 /*#region 選擇中標籤*/
-ul.pagination li a.active {
-    background-color: #4CAF50;
+ul.moon_command_list li a.active {
+    background-color: cornflowerblue;
     color: white;
-    border: 1px solid #4CAF50;
+    border: 1px solid cornflowerblue;
 }
 
-ul.pagination li a:hover:not(.active) {
+ul.moon_command_list li a:hover:not(.active) {
     background-color: #ddd;
 }
 /*#endregion */
