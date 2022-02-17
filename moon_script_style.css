@@ -10,7 +10,8 @@ ul.moon_command_list li {
 }
 
 ul.moon_command_list li a {
-    color: black;
+    /* color: black; */
+    color: var(--el-text-color-primary);
     float: left;
     padding: 4px 16px;
     text-decoration: none;
