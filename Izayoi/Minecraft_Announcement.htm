@@ -24,6 +24,9 @@
 				font-size: 10px;
 				user-select: none;
 			}
+			label {
+				user-select: none;
+			}
 		</style>
 	</header>
 	<body>
@@ -32,6 +35,10 @@
 		</div>
 		<div class="content">
 			<textarea id="txt_message"></textarea>
+			<div>
+				<input type="checkbox" id="chk_isAnnouncement" />
+				<label for="chk_isAnnouncement" title="自動在頭尾加上```">公告使用</label>
+			</div>
 			<div class="command">
 				<input type="button" id="btn_send" value="發送"/>
 			</div>
@@ -47,6 +54,10 @@
 						alert("發送失敗! 訊息為空!");
 					}
 					else {
+						let isAnnouncement = $("#chk_isAnnouncement")[0].checked;
+						if (isAnnouncement == true) {
+							message = "```" + message + "```";
+						}
 						this.disabled = true;
 						let obj = {content:message};
 						let json = JSON.stringify(obj);
