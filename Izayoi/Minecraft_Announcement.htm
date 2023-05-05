@@ -1,0 +1,60 @@
+<html>
+	<header>
+		<title>Minecraft 公告機器人</title>
+		<script type="text/javascript" src="general.js?ver=2023050501"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+		<style>
+			textarea#txt_message {
+				height: 200px;
+				width: 100%;
+			}
+			div.content {
+				width: 50%;
+			}
+			div.command {
+				text-align: center;
+			}
+			div.command input {
+				width: 50%;
+			}
+			div.version {
+				font-style: italic;
+				text-align: right;
+				color: gray;
+				font-size: 10px;
+				user-select: none;
+			}
+		</style>
+	</header>
+	<body>
+		<div>
+			發送公告
+		</div>
+		<div class="content">
+			<textarea id="txt_message"></textarea>
+			<div class="command">
+				<input type="button" id="btn_send" value="發送"/>
+			</div>
+			<div class="version">
+				當前版本 2023050501
+			</div>
+		</div>
+		<script type="text/javascript">
+			$(document).ready(function(){
+				$("#btn_send").on("click", async function(){
+					let message = $("#txt_message").val();
+					if(message == "") {
+						alert("發送失敗! 訊息為空!");
+					}
+					else {
+						let obj = {content:message};
+						let json = JSON.stringify(obj);
+						let url = "https://discord.com/api/webhooks/1103529971563110400/hqmmog4v8JjKJoTWLayOvOZ8wR7Y5KpDhJS4Y2lPaFXoA6k2SP-QedD9YLDGocahjdt_";
+						await post_j(url, json);
+						alert("發送完畢!");
+					}
+				});
+			});
+		</script>
+	</body>
+</html>
