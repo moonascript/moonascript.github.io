@@ -47,11 +47,13 @@
 						alert("發送失敗! 訊息為空!");
 					}
 					else {
+						this.disabled = true;
 						let obj = {content:message};
 						let json = JSON.stringify(obj);
 						let url = "https://discord.com/api/webhooks/1103529971563110400/hqmmog4v8JjKJoTWLayOvOZ8wR7Y5KpDhJS4Y2lPaFXoA6k2SP-QedD9YLDGocahjdt_";
 						await post_j(url, json);
 						alert("發送完畢!");
+						this.disabled = false;
 					}
 				});
 			});
