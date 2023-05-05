@@ -36,8 +36,14 @@
 		<div class="content">
 			<textarea id="txt_message"></textarea>
 			<div>
-				<input type="checkbox" id="chk_isAnnouncement" />
-				<label for="chk_isAnnouncement" title="自動在頭尾加上```">公告使用</label>
+				<div>
+					<input type="checkbox" id="chk_isAnnouncement" />
+					<label for="chk_isAnnouncement" title="自動在頭尾加上```">公告使用</label>
+				</div>
+				<div>
+					<input type="checkbox" id="chk_isAutoClean" />
+					<label for="chk_isAutoClean" title="發送完畢以後自動清除文字">發送完畢以後自動清除文字</label>
+				</div>
 			</div>
 			<div class="command">
 				<input type="button" id="btn_send" value="發送"/>
@@ -64,6 +70,10 @@
 						let url = "https://discord.com/api/webhooks/1103529971563110400/hqmmog4v8JjKJoTWLayOvOZ8wR7Y5KpDhJS4Y2lPaFXoA6k2SP-QedD9YLDGocahjdt_";
 						await post_j(url, json);
 						alert("發送完畢!");
+						let isAutoClean = $("#chk_isAutoClean")[0].checked;
+						if(isAutoClean == true) {
+							$("#txt_message").val("");
+						}
 						this.disabled = false;
 					}
 				});
