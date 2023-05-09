@@ -133,11 +133,6 @@
 			async function loadMember() {
 				try {
 					let list = $("#sel_member_list")[0];
-					// 先清空
-					let count = list.children.length;
-					for (let i=0 ; i<count ; i++) {
-						list.children[0].remove();
-					}
 					let r1 = await get("http://localhost:8016/api/guildroles");
 					let l1 = JSON.parse(r1);
 					
