@@ -6,7 +6,12 @@
 		<style>
 			textarea#txt_message {
 				height: 200px;
-				width: 100%;
+				width: 80%;
+			}
+			select#sel_member_list {
+				height: 200px;
+				width: 19%;
+				vertical-align: top;
 			}
 			div.content {
 				width: 50%;
@@ -40,7 +45,12 @@
 			發送公告到<a href="https://discord.com/channels/1023470298516959282/1077801438756995202" class="link" target="_blank">DC頻道</a>
 		</div>
 		<div class="content">
-			<textarea id="txt_message"></textarea>
+			<div class="main_message">
+				<textarea id="txt_message"></textarea>
+				<select id="sel_member_list" disabled size=10>
+					<option value="0">正在載入名單中...</option>
+				</select>
+			</div>
 			<div>
 				<div>
 					<input type="checkbox" id="chk_isAnnouncement" />
@@ -55,10 +65,11 @@
 				<input type="button" id="btn_send" value="發送"/>
 			</div>
 			<div class="version">
-				當前版本 2023050503
+				當前版本 2023050901
 			</div>
 		</div>
 		<script type="text/javascript">
+			var m;
 			$(document).ready(function(){
 				$("#btn_send").on("click", async function(){
 					let message = $("#txt_message").val();
@@ -66,13 +77,31 @@
 						alert("發送失敗! 訊息為空!");
 					}
 					else {
+						let json = "";
 						let isAnnouncement = $("#chk_isAnnouncement")[0].checked;
-						if (isAnnouncement == true) {
-							message = "```" + message + "```";
+						if(message.indexOf("<@") != -1 && message.indexOf(">") != -1) {
+							let title = "";
+							if (isAnnouncement == true) {
+								title = "公告";
+							}
+							let embed = {
+								title:title,
+								description:message,
+								color:194446
+							};
+							let obj = {
+								embeds:[embed]
+							}
+							json = JSON.stringify(obj);
 						}
-						this.disabled = true;
-						let obj = {content:message};
-						let json = JSON.stringify(obj);
+						else {
+							if (isAnnouncement == true) {
+								message = "```" + message + "```";
+							}
+							this.disabled = true;
+							let obj = {content:message};
+							json = JSON.stringify(obj);
+						}
 						let url = "https://discord.com/api/webhooks/1103529971563110400/hqmmog4v8JjKJoTWLayOvOZ8wR7Y5KpDhJS4Y2lPaFXoA6k2SP-QedD9YLDGocahjdt_";
 						await post_j(url, json);
 						alert("發送完畢!");
@@ -83,7 +112,80 @@
 						this.disabled = false;
 					}
 				});
+				$("#sel_member_list").on("dblclick", async function(){
+					let msg = $("#txt_message").val();
+					let type = $(this.selectedOptions[0]).attr("type");
+					switch (type) {
+						case "member":
+							msg += "<@" + this.value + ">";
+							break;
+						case "role":
+							msg += "<@&" + this.value + ">";
+							break;
+					}
+					$("#txt_message").val(msg);
+				});
+				(async function () {
+					await loadMember();
+				})();
 			});
+			
+			async function loadMember() {
+				try {
+					let list = $("#sel_member_list")[0];
+					// 先清空
+					let count = list.children.length;
+					for (let i=0 ; i<count ; i++) {
+						list.children[0].remove();
+					}
+					let r1 = await get("http://localhost:8016/api/guildroles");
+					let l1 = JSON.parse(r1);
+					
+					let item1 = document.createElement("option");
+					item1.text = "身分組"
+					item1.disabled = true;
+					item1.style.textAlign = "center";
+					list.appendChild(item1);
+					for (let i=0 ; i<l1.length ; i++) {
+						let role = l1[i];
+						let option = document.createElement("option");
+						option.text = role.name;
+						option.value = role.id;
+						option.setAttribute("type", "role");
+						list.appendChild(option);
+					}
+					
+					let r2 = await get("http://localhost:8016/api/guildmembers");
+					let l2 = JSON.parse(r2);
+					
+					let item2 = document.createElement("option");
+					item2.text = "成員"
+					item2.disabled = true;
+					item2.style.textAlign = "center";
+					list.appendChild(item2);
+					for (let i=0 ; i<l2.length ; i++) {
+						let member = l2[i].user;
+						let option = document.createElement("option");
+						option.text = l2[i].nick || member.username;
+						option.value = member.id;
+						option.setAttribute("type", "member");
+						list.appendChild(option);
+					}
+					list.disabled = false;
+				}
+				catch (e) {
+					let list = $("#sel_member_list")[0];
+					// 先清空
+					let count = list.children.length;
+					for (let i=0 ; i<count ; i++) {
+						list.children[0].remove();
+					}
+					let item = document.createElement("option");
+					item.text = "取得人員名單失敗";
+					list.appendChild(item);
+					list.disabled = true;
+				}
+			}
 		</script>
 	</body>
 </html>
