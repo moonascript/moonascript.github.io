@@ -1,0 +1,52 @@
+{
+  "logPath": "C:\\inetpub\\wwwroot\\product\\Izayoi\\Minecraft Log Listener\\Minecraft Log Listener\\bin\\Debug\\Setting",
+  "WebhookSrc": "https://discord.com/api/webhooks/1103915761958916136/UdmYPsUIXaow_qrkI2z0XNE9I40e2wZQy2D1QBd9OdShqdc_51opgQRK2fy7srVkjZ2T",
+  "nowReadLine": 0,
+  "logs": [
+    {
+      "findStr": "\\[(.+)\\] \\[Server thread/INFO\\]: <(.+)> (.+)",
+      "showStr": "[{1}] [{2}] 說: {3}",
+      "enable": true
+    },
+    {
+      "findStr": "\\[(.+)\\] \\[Server thread/INFO\\]: (.+) joined the game",
+      "showStr": "[{1}] [{2}] 加入遊戲了!",
+      "enable": true
+    },
+    {
+      "findStr": "\\[(.+)\\] \\[Server thread/INFO\\]: (.+) left the game",
+      "showStr": "[{1}] [{2}] 離開遊戲了!",
+      "enable": true
+    },
+    {
+      "findStr": "\\[(.+)\\] \\[Server thread/INFO\\]: (.+) has made the advancement \\[(.+)\\]",
+      "showStr": "[{1}] [{2}] 完成進度 [{3}]!",
+      "enable": true
+    },
+    {
+      "findStr": "\\[(.+)\\] \\[Server thread/INFO\\]: (.+) was slain by (.+)",
+      "showStr": "[{1}] [{2}] 被 {3} 殺害了!",
+      "enable": true
+    },
+    {
+      "findStr": "\\[(.+)\\] \\[Server thread/INFO\\]: Starting Minecraft server",
+      "showStr": "伺服器正在啟動中!",
+      "enable": true
+    },
+    {
+      "findStr": "\\[(.+)\\] \\[Server thread/INFO\\]: Done",
+      "showStr": "伺服器已開啟!",
+      "enable": true
+    },
+    {
+      "findStr": "\\[(.+)\\] \\[Server thread/INFO\\]: Stopping the server",
+      "showStr": "伺服器正在關閉中!",
+      "enable": true
+    },
+    {
+      "findStr": "\\[(.+)\\] \\[Server thread/INFO\\]: Stopping server",
+      "showStr": "伺服器已關閉!",
+      "enable": true
+    }
+  ]
+}
