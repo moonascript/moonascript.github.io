@@ -4,48 +4,138 @@
   "nowReadLine": 0,
   "logs": [
     {
+      "type": 1,
+      "timeOffset": "{1}",
       "findStr": "\\[(.+)\\] \\[Server thread/INFO\\]: <(.+)> (.+)",
       "showStr": "[{1}] [{2}] 說: {3}",
+      "checkUser": true,
+      "embed_Info": {
+        "message": ":speech_balloon: {2} ： {3}",
+        "title": "聊天訊息",
+        "color": 9948159,
+        "colorHEX": "97CBFF",
+        "timestamp": "0001-01-01T00:00:00"
+      },
       "enable": true
     },
     {
+      "type": 1,
+      "timeOffset": "{1}",
       "findStr": "\\[(.+)\\] \\[Server thread/INFO\\]: (.+) joined the game",
       "showStr": "[{1}] [{2}] 加入遊戲了!",
+      "checkUser": true,
+      "embed_Info": {
+        "message": ":white_check_mark: 玩家 {2} 加入遊戲了!",
+        "title": "登入通知",
+        "color": 194446,
+        "colorHEX": "2F78E",
+        "timestamp": "0001-01-01T00:00:00"
+      },
       "enable": true
     },
     {
+      "type": 1,
+      "timeOffset": "{1}",
       "findStr": "\\[(.+)\\] \\[Server thread/INFO\\]: (.+) left the game",
       "showStr": "[{1}] [{2}] 離開遊戲了!",
+      "checkUser": true,
+      "embed_Info": {
+        "message": ":wave: 玩家 {2} 離開遊戲了!",
+        "title": "離線通知",
+        "color": 14211307,
+        "colorHEX": "D8D8EB",
+        "timestamp": "0001-01-01T00:00:00"
+      },
       "enable": true
     },
     {
+      "type": 1,
+      "timeOffset": "{1}",
       "findStr": "\\[(.+)\\] \\[Server thread/INFO\\]: (.+) has made the advancement \\[(.+)\\]",
       "showStr": "[{1}] [{2}] 完成進度 [{3}]!",
+      "checkUser": true,
+      "embed_Info": {
+        "message": ":scroll: 玩家 {2} 完成進度 [{3}]!",
+        "title": "完成進度",
+        "color": 6974207,
+        "colorHEX": "6A6AFF",
+        "timestamp": "0001-01-01T00:00:00"
+      },
       "enable": true
     },
     {
+      "type": 1,
+      "timeOffset": "{1}",
       "findStr": "\\[(.+)\\] \\[Server thread/INFO\\]: (.+) was slain by (.+)",
       "showStr": "[{1}] [{2}] 被 {3} 殺害了!",
+      "checkUser": true,
+      "embed_Info": {
+        "message": ":skull: 玩家 {2} 被 {3} 殺害了!",
+        "title": "死亡通知",
+        "color": 16711680,
+        "colorHEX": "FF0000",
+        "timestamp": "0001-01-01T00:00:00"
+      },
       "enable": true
     },
     {
+      "type": 1,
+      "timeOffset": "{1}",
       "findStr": "\\[(.+)\\] \\[Server thread/INFO\\]: Starting Minecraft server",
       "showStr": "伺服器正在啟動中!",
+      "checkUser": false,
+      "embed_Info": {
+        "message": ":desktop: 伺服器正在啟動中!",
+        "title": "伺服器狀態",
+        "color": 16759671,
+        "colorHEX": "FFBB77",
+        "timestamp": "0001-01-01T00:00:00"
+      },
       "enable": true
     },
     {
+      "type": 1,
+      "timeOffset": "{1}",
       "findStr": "\\[(.+)\\] \\[Server thread/INFO\\]: Done",
       "showStr": "伺服器已開啟!",
+      "checkUser": false,
+      "embed_Info": {
+        "message": ":desktop: 伺服器已開啟!",
+        "title": "伺服器狀態",
+        "color": 16759671,
+        "colorHEX": "FFBB77",
+        "timestamp": "0001-01-01T00:00:00"
+      },
       "enable": true
     },
     {
+      "type": 1,
+      "timeOffset": "{1}",
       "findStr": "\\[(.+)\\] \\[Server thread/INFO\\]: Stopping the server",
       "showStr": "伺服器正在關閉中!",
+      "checkUser": false,
+      "embed_Info": {
+        "message": ":desktop: 伺服器正在關閉中!",
+        "title": "伺服器狀態",
+        "color": 16759671,
+        "colorHEX": "FFBB77",
+        "timestamp": "0001-01-01T00:00:00"
+      },
       "enable": true
     },
     {
+      "type": 1,
+      "timeOffset": "{1}",
       "findStr": "\\[(.+)\\] \\[Server thread/INFO\\]: Stopping server",
       "showStr": "伺服器已關閉!",
+      "checkUser": false,
+      "embed_Info": {
+        "message": ":desktop: 伺服器已關閉!",
+        "title": "伺服器狀態",
+        "color": 16759671,
+        "colorHEX": "FFBB77",
+        "timestamp": "0001-01-01T00:00:00"
+      },
       "enable": true
     }
   ]
