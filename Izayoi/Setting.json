@@ -21,6 +21,21 @@
     {
       "type": 1,
       "timeOffset": "{1}",
+      "findStr": "\\[(.+)\\] \\[Server thread/INFO\\]: [Not Secure] [Server] (.+)",
+      "showStr": "[{1}] [管理員] 說: {2}",
+      "checkUser": true,
+      "embed_Info": {
+        "message": ":speech_balloon: 管理員 ： {2}",
+        "title": "聊天訊息",
+        "color": 9948159,
+        "colorHEX": "97CBFF",
+        "timestamp": "0001-01-01T00:00:00"
+      },
+      "enable": true
+    },
+    {
+      "type": 1,
+      "timeOffset": "{1}",
       "findStr": "\\[(.+)\\] \\[Server thread/INFO\\]: (.+) joined the game",
       "showStr": "[{1}] [{2}] 加入遊戲了!",
       "checkUser": true,
