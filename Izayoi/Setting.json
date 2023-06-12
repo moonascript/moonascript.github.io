@@ -6,11 +6,11 @@
     {
       "type": 1,
       "timeOffset": "{1}",
-      "findStr": "\\[(.+)\\] \\[Server thread/INFO\\]: <(.+)> (.+)",
-      "showStr": "[{1}] [{2}] 說: {3}",
+      "findStr": "\\[(.+)\\] \\[Async Chat Thread - #(.+)/INFO\\]: <(.+)> (.+)",
+      "showStr": "[{1}] [{3}] 說: {4}",
       "checkUser": true,
       "embed_Info": {
-        "message": ":speech_balloon: {2} ： {3}",
+        "message": ":speech_balloon: {3} ： {4}",
         "title": "聊天訊息",
         "color": 9948159,
         "colorHEX": "97CBFF",
