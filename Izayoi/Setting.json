@@ -23,7 +23,7 @@
       "timeOffset": "{1}",
       "findStr": "\\[(.+)\\] \\[Server thread/INFO\\]: [Not Secure] [Server] (.+)",
       "showStr": "[{1}] [管理員] 說: {2}",
-      "checkUser": true,
+      "checkUser": false,
       "embed_Info": {
         "message": ":speech_balloon: 管理員 ： {2}",
         "title": "聊天訊息",
