@@ -21,7 +21,7 @@
     {
       "type": 1,
       "timeOffset": "{1}",
-      "findStr": "\\[(.+)\\] \\[Server thread/INFO\\]: [Not Secure] [Server] (.+)",
+      "findStr": "\\[(.+)\\] \\[Server thread/INFO\\]: \\[Not Secure\\] \\[Server\\] (.+)",
       "showStr": "[{1}] [管理員] 說: {2}",
       "checkUser": false,
       "embed_Info": {
